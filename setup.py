@@ -13,6 +13,9 @@ setup(
     license='MIT',
     packages=['utilsMini'],
     platforms=["all"],
+    install_requires=[
+        'ujson'
+    ],
     url='https://github.com/beincy/utils-mini',
     classifiers=[
         "Development Status :: 4 - Beta",
