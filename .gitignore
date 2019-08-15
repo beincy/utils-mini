@@ -1,2 +1,8 @@
 
 utilsMini/__pycache__/
+
+build/
+
+dist/
+
+utils_mini\.egg-info/
