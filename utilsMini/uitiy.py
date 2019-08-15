@@ -91,3 +91,16 @@ def GetMD5(encryption):
     b = encryption.encode(encoding='utf-8')
     m.update(b)
     return m.hexdigest()
+
+
+def isNoneOrEmpty(obj):
+    '''
+    判断列表或者字符串是否为空
+    '''
+    if obj is None:
+        return False
+    if isinstance(obj, list):
+        return len(obj) <= 0
+    if isinstance(obj, str):
+        return len(obj.replace(' ', '')) <= 0
+    return True
