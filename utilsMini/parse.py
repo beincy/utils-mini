@@ -12,7 +12,7 @@ def parseStr(value, default='') -> str:
         return value
     try:
         return str(value)
-    except:
+    except TypeError:
         return default
 
 
@@ -26,7 +26,7 @@ def parseInt(value, default=0) -> int:
         return value
     try:
         return int(value)
-    except:
+    except TypeError:
         return default
 
 
@@ -40,7 +40,7 @@ def parseFloat(value, default=0) -> float:
         return value
     try:
         return float(value)
-    except:
+    except TypeError:
         pass
     return default
 
@@ -55,7 +55,7 @@ def parseDict(value, default={}) -> dict:
         return value
     try:
         return dict(value)
-    except:
+    except TypeError:
         return default
 
 
@@ -69,7 +69,7 @@ def parseList(value, default=[]) -> list:
         return value
     try:
         return list(value)
-    except:
+    except TypeError:
         return default
 
 
@@ -83,7 +83,7 @@ def parseTuple(value, default=()) -> tuple:
         return value
     try:
         return tuple(value)
-    except:
+    except TypeError:
         return default
 
 
@@ -102,7 +102,7 @@ def parseTime(timeStr, timeFormat='%Y-%m-%d %H:%M:%S'):
             else:
                 theTime = datetime.datetime.strptime(timeStr,
                                                      timeFormat.split(" ")[0])
-        except:
+        except TypeError:
             pass
     return theTime
 
@@ -117,7 +117,7 @@ def parseTimeStr(dateVal, timeFormat='%Y-%m-%d %H:%M:%S'):
     if isinstance(dateVal, datetime.datetime):
         try:
             timeStr = dateVal.strftime(timeFormat)
-        except:
+        except TypeError:
             timeStr = datetime.datetime \
                 .strptime('1997-01-01 00:00:01', '%Y-%m-%d %H:%M:%S') \
                 .strftime(timeFormat)
@@ -158,6 +158,6 @@ def parseJsonobj(obj):
     if isinstance(obj, str):
         try:
             return ujson.loads(obj)
-        except:
+        except TypeError:
             return None
     return None
