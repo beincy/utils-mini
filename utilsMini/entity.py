@@ -1,4 +1,4 @@
-from utils.parse import parseStr, parseDict, parseFloat, parseInt, parseList, parseTime
+from utilsMini.parse import parseStr, parseDict, parseFloat, parseInt, parseList, parseTime
 import datetime
 
 
