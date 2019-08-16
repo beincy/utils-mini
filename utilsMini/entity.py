@@ -1,5 +1,4 @@
 from utilsMini.parse import parseStr, parseDict, parseFloat, parseInt, parseList, parseTime
-import datetime
 
 
 class EntityMetaClass(type):
@@ -29,10 +28,12 @@ class Entity(dict, metaclass=EntityMetaClass):
     def __setattr__(self, key, value):
         self[key] = value
 
-    def __init__(self, **kwargs):
+    def __init__(self, middleware=None, **kwargs):
         if isinstance(kwargs, dict):
             for k, v in kwargs.items():
                 if k in self.__mappings__:
+                    if middleware:
+                        k, v = middleware(k, v)
                     if isinstance(type(self.__mappings__[k]),
                                   (ObjectType, List)):
                         self[k] = self.__mappings__[k].parseValue(v)
