@@ -1,5 +1,5 @@
 import datetime
-from utils.parse import parseTime, parseTimeStr
+from utilsMini.parse import parseTime, parseTimeStr
 
 
 class SharpDateTime:
