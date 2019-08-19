@@ -25,11 +25,12 @@ class Entity(dict, metaclass=EntityMetaClass):
             if key in self:
                 return self[key]
             else:
-                return object.__getattribute__(self, '__mappings__')[key].default
+                return object.__getattribute__(self,
+                                               '__mappings__')[key].default
         return object.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        if key in self:
+        if key in object.__getattribute__(self, '__mappings__'):
             self[key] = value
 
     def __init__(self, middleware=None, **kwargs):

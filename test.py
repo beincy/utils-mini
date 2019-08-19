@@ -78,5 +78,7 @@ class DateEncoder(json.JSONEncoder):
 
 
 er = aaa(**dic)
-print(er.z)
+er2 = aaa()
+er2.z = 'q'
+print(er2.z)
 print(json.dumps(er, cls=DateEncoder))

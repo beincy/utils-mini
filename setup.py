@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='utils-mini',
-    version='0.0.6',
+    version='0.0.7',
     description=('python的一些简单的工具方法',
                  'Some simple tools and methods of Python'),
     long_description=open('README.rst', 'rb').read(),
