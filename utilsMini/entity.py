@@ -22,11 +22,15 @@ class Entity(dict, metaclass=EntityMetaClass):
     """
     def __getattribute__(self, key):
         if key in object.__getattribute__(self, '__mappings__'):
-            return self[key]
+            if key in self:
+                return self[key]
+            else:
+                return object.__getattribute__(self, '__mappings__')[key].default
         return object.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        self[key] = value
+        if key in self:
+            self[key] = value
 
     def __init__(self, middleware=None, **kwargs):
         if isinstance(kwargs, dict):
@@ -123,6 +127,7 @@ class ObjectType(Feild):
     """
     def __init__(self, typeFeild):
         self.typeFeild = typeFeild
+        self.default = None
 
     def parseValue(self, value):
         return self.typeFeild(**value)

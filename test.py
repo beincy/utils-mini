@@ -25,6 +25,7 @@ class aaa(entity.Entity):
     e = entity.Float()
     f = entity.DateTime()
     g = entity.Dictionary()
+    z = entity.String("z")
 
 
 dic = {
@@ -77,4 +78,5 @@ class DateEncoder(json.JSONEncoder):
 
 
 er = aaa(**dic)
+print(er.z)
 print(json.dumps(er, cls=DateEncoder))
