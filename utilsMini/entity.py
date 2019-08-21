@@ -12,7 +12,7 @@ class EntityMetaClass(type):
         return type.__new__(cls, name, bases, attrs)
 
 
-class Feild():
+class FeildType():
     pass
 
 
@@ -40,15 +40,15 @@ class Entity(dict, metaclass=EntityMetaClass):
                     if middleware:
                         k, v = middleware(k, v)
                     if isinstance(type(self.__mappings__[k]),
-                                  (ObjectType, List)):
+                                  (ObjectType, ListType)):
                         self[k] = self.__mappings__[k].parseValue(v)
-                    elif issubclass(type(self.__mappings__[k]), Feild):
+                    elif issubclass(type(self.__mappings__[k]), FeildType):
                         self[k] = self.__mappings__[k].parseValue(v)
                     else:
                         self[k] = v
 
 
-class String(Feild):
+class StringType(FeildType):
     """
     实体强制类型
     """
@@ -59,7 +59,7 @@ class String(Feild):
         return parseStr(value, self.default)
 
 
-class Intger(Feild):
+class IntgerType(FeildType):
     """
     实体强制类型
     """
@@ -70,7 +70,7 @@ class Intger(Feild):
         return parseInt(value, self.default)
 
 
-class Float(Feild):
+class FloatType(FeildType):
     """
     实体强制类型
     """
@@ -81,7 +81,7 @@ class Float(Feild):
         return parseFloat(value, self.default)
 
 
-class List(Feild):
+class ListType(FeildType):
     """
     实体强制类型
     """
@@ -98,7 +98,7 @@ class List(Feild):
         return res
 
 
-class Dictionary(Feild):
+class DictionaryType(FeildType):
     """
     实体强制类型
     """
@@ -109,7 +109,7 @@ class Dictionary(Feild):
         return parseDict(value, self.default)
 
 
-class DateTime(Feild):
+class DateTimeType(FeildType):
     """
     实体强制类型
     """
@@ -122,7 +122,7 @@ class DateTime(Feild):
         return parseTime(value, self.default)
 
 
-class ObjectType(Feild):
+class ObjectType(FeildType):
     """
     实体强制类型
     """
