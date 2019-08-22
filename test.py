@@ -7,7 +7,7 @@ class fff(entity.Entity):
     def __init__(self, **kwargs):
         super(fff, self).__init__(**kwargs)
 
-    a = entity.FeildType()
+    a = entity.IntgerType()
     e = entity.FloatType()
     f = entity.DateTimeType()
     g = entity.DictionaryType()
@@ -25,6 +25,7 @@ class aaa(entity.Entity):
     f = entity.DateTimeType()
     g = entity.DictionaryType()
     z = entity.StringType("z")
+    j = entity.ListType(entity.IntgerType)
 
 
 dic = {
@@ -65,6 +66,7 @@ dic = {
     "g": {
         "ddd": 44
     },
+    "j": [1]
 }
 
 

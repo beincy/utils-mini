@@ -94,16 +94,18 @@ class ListType(FeildType):
         tempList = parseList(value, self.default)
         res = []
         if tempList:
-            if issubclass(type(self.typeFeild), Entity):
+            if issubclass(self.typeFeild, Entity):
                 for item in tempList:
                     res.append(self.typeFeild(**item))
-            elif issubclass(type(self.typeFeild), FeildType):
+            elif issubclass(self.typeFeild, FeildType):
                 for item in tempList:
                     res.append(self.typeFeild().parseValue(item))
             elif isinstance(self.typeFeild, FunctionType):
-                res.append(self.typeFeild(item))
+                for item in tempList:
+                    res.append(self.typeFeild(item))
             else:
-                res.append(item)
+                for item in tempList:
+                    res.append(item)
         return res
 
 
