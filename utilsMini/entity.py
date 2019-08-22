@@ -1,4 +1,5 @@
 from utilsMini.parse import parseStr, parseDict, parseFloat, parseInt, parseList, parseTime
+from types import FunctionType
 
 
 class EntityMetaClass(type):
@@ -39,7 +40,7 @@ class Entity(dict, metaclass=EntityMetaClass):
                 if k in self.__mappings__:
                     if middleware:
                         k, v = middleware(k, v)
-                    if isinstance(type(self.__mappings__[k]),
+                    if isinstance(self.__mappings__[k],
                                   (ObjectType, ListType)):
                         self[k] = self.__mappings__[k].parseValue(v)
                     elif issubclass(type(self.__mappings__[k]), FeildType):
@@ -93,8 +94,16 @@ class ListType(FeildType):
         tempList = parseList(value, self.default)
         res = []
         if tempList:
-            for item in tempList:
-                res.append(self.typeFeild(**item))
+            if issubclass(type(self.typeFeild), Entity):
+                for item in tempList:
+                    res.append(self.typeFeild(**item))
+            elif issubclass(type(self.typeFeild), FeildType):
+                for item in tempList:
+                    res.append(self.typeFeild().parseFloat(item))
+            elif isinstance(self.typeFeild, FunctionType):
+                res.append(self.typeFeild(item))
+            else:
+                res.append(item)
         return res
 
 
