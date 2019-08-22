@@ -99,7 +99,7 @@ class ListType(FeildType):
                     res.append(self.typeFeild(**item))
             elif issubclass(type(self.typeFeild), FeildType):
                 for item in tempList:
-                    res.append(self.typeFeild().parseFloat(item))
+                    res.append(self.typeFeild().parseValue(item))
             elif isinstance(self.typeFeild, FunctionType):
                 res.append(self.typeFeild(item))
             else:
