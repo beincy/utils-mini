@@ -10,6 +10,10 @@ class EntityMetaClass(type):
             for k, v in attrs.items():
                 mappings[k] = v
             attrs['__mappings__'] = mappings  # 保存属性和列的映射关系
+            if bases :
+                for ibase in bases:
+                    if ibase is not Entity:
+                        attrs['__mappings__'].update(ibase.__mappings__)
         return type.__new__(cls, name, bases, attrs)
 
 
