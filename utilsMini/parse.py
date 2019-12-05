@@ -135,7 +135,7 @@ def tryGetValue(dic, key, executor=None, context=None):
     if isinstance(dic, dict):
         value = dic.get(key)
     if executor:
-        if context:
+        if context is not None:
             return executor(value, context)
         else:
             return executor(value)
