@@ -1,5 +1,5 @@
 from utilsMini.parse import parseStr, parseDict, parseFloat, parseInt, parseList, parseTime
-import datetime
+from types import FunctionType
 
 
 class EntityMetaClass(type):
@@ -10,10 +10,14 @@ class EntityMetaClass(type):
             for k, v in attrs.items():
                 mappings[k] = v
             attrs['__mappings__'] = mappings  # 保存属性和列的映射关系
+            if bases :
+                for ibase in bases:
+                    if ibase is not Entity:
+                        attrs['__mappings__'].update(ibase.__mappings__)
         return type.__new__(cls, name, bases, attrs)
 
 
-class Feild():
+class FeildType():
     pass
 
 
@@ -23,26 +27,33 @@ class Entity(dict, metaclass=EntityMetaClass):
     """
     def __getattribute__(self, key):
         if key in object.__getattribute__(self, '__mappings__'):
-            return self[key]
+            if key in self:
+                return self[key]
+            else:
+                return object.__getattribute__(self,
+                                               '__mappings__')[key].default
         return object.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        self[key] = value
+        if key in object.__getattribute__(self, '__mappings__'):
+            self[key] = value
 
-    def __init__(self, **kwargs):
+    def __init__(self, middleware=None, **kwargs):
         if isinstance(kwargs, dict):
             for k, v in kwargs.items():
                 if k in self.__mappings__:
-                    if isinstance(type(self.__mappings__[k]),
-                                  (ObjectType, List)):
+                    if middleware:
+                        k, v = middleware(k, v)
+                    if isinstance(self.__mappings__[k],
+                                  (ObjectType, ListType)):
                         self[k] = self.__mappings__[k].parseValue(v)
-                    elif issubclass(type(self.__mappings__[k]), Feild):
+                    elif issubclass(type(self.__mappings__[k]), FeildType):
                         self[k] = self.__mappings__[k].parseValue(v)
                     else:
                         self[k] = v
 
 
-class String(Feild):
+class StringType(FeildType):
     """
     实体强制类型
     """
@@ -53,7 +64,7 @@ class String(Feild):
         return parseStr(value, self.default)
 
 
-class Intger(Feild):
+class IntgerType(FeildType):
     """
     实体强制类型
     """
@@ -64,7 +75,7 @@ class Intger(Feild):
         return parseInt(value, self.default)
 
 
-class Float(Feild):
+class FloatType(FeildType):
     """
     实体强制类型
     """
@@ -75,7 +86,7 @@ class Float(Feild):
         return parseFloat(value, self.default)
 
 
-class List(Feild):
+class ListType(FeildType):
     """
     实体强制类型
     """
@@ -87,12 +98,22 @@ class List(Feild):
         tempList = parseList(value, self.default)
         res = []
         if tempList:
-            for item in tempList:
-                res.append(self.typeFeild(**item))
+            if issubclass(self.typeFeild, Entity):
+                for item in tempList:
+                    res.append(self.typeFeild(**item))
+            elif issubclass(self.typeFeild, FeildType):
+                for item in tempList:
+                    res.append(self.typeFeild().parseValue(item))
+            elif isinstance(self.typeFeild, FunctionType):
+                for item in tempList:
+                    res.append(self.typeFeild(item))
+            else:
+                for item in tempList:
+                    res.append(item)
         return res
 
 
-class Dictionary(Feild):
+class DictionaryType(FeildType):
     """
     实体强制类型
     """
@@ -103,7 +124,7 @@ class Dictionary(Feild):
         return parseDict(value, self.default)
 
 
-class DateTime(Feild):
+class DateTimeType(FeildType):
     """
     实体强制类型
     """
@@ -116,12 +137,13 @@ class DateTime(Feild):
         return parseTime(value, self.default)
 
 
-class ObjectType(Feild):
+class ObjectType(FeildType):
     """
     实体强制类型
     """
     def __init__(self, typeFeild):
         self.typeFeild = typeFeild
+        self.default = None
 
     def parseValue(self, value):
         return self.typeFeild(**value)

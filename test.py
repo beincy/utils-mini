@@ -1,5 +1,4 @@
 from utilsMini import entity
-import ujson
 import json
 import datetime
 
@@ -8,23 +7,25 @@ class fff(entity.Entity):
     def __init__(self, **kwargs):
         super(fff, self).__init__(**kwargs)
 
-    a = entity.Intger()
-    e = entity.Float()
-    f = entity.DateTime()
-    g = entity.Dictionary()
+    a = entity.IntgerType()
+    e = entity.FloatType()
+    f = entity.DateTimeType()
+    g = entity.DictionaryType()
 
 
 class aaa(entity.Entity):
     def __init__(self, **kwargs):
         super(aaa, self).__init__(**kwargs)
 
-    a = entity.Intger()
-    b = entity.List(fff)
+    a = entity.IntgerType()
+    b = entity.ListType(fff)
     c = entity.ObjectType(fff)
-    d = entity.String()
-    e = entity.Float()
-    f = entity.DateTime()
-    g = entity.Dictionary()
+    d = entity.StringType()
+    e = entity.FloatType()
+    f = entity.DateTimeType()
+    g = entity.DictionaryType()
+    z = entity.StringType("z")
+    j = entity.ListType(entity.IntgerType)
 
 
 dic = {
@@ -65,6 +66,7 @@ dic = {
     "g": {
         "ddd": 44
     },
+    "j": [1]
 }
 
 
@@ -77,4 +79,7 @@ class DateEncoder(json.JSONEncoder):
 
 
 er = aaa(**dic)
+er2 = aaa()
+er2.z = 'q'
+print(er2.z)
 print(json.dumps(er, cls=DateEncoder))

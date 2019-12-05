@@ -98,7 +98,7 @@ def isNoneOrEmpty(obj):
     判断列表或者字符串是否为空
     '''
     if obj is None:
-        return False
+        return True
     if isinstance(obj, list):
         return len(obj) <= 0
     if isinstance(obj, str):

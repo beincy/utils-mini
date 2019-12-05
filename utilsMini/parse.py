@@ -12,7 +12,7 @@ def parseStr(value, default='') -> str:
         return value
     try:
         return str(value)
-    except TypeError:
+    except:
         return default
 
 
@@ -26,7 +26,7 @@ def parseInt(value, default=0) -> int:
         return value
     try:
         return int(value)
-    except TypeError:
+    except:
         return default
 
 
@@ -40,7 +40,7 @@ def parseFloat(value, default=0) -> float:
         return value
     try:
         return float(value)
-    except TypeError:
+    except:
         pass
     return default
 
@@ -55,7 +55,7 @@ def parseDict(value, default={}) -> dict:
         return value
     try:
         return dict(value)
-    except TypeError:
+    except:
         return default
 
 
@@ -69,7 +69,7 @@ def parseList(value, default=[]) -> list:
         return value
     try:
         return list(value)
-    except TypeError:
+    except:
         return default
 
 
@@ -83,7 +83,7 @@ def parseTuple(value, default=()) -> tuple:
         return value
     try:
         return tuple(value)
-    except TypeError:
+    except:
         return default
 
 
@@ -102,7 +102,7 @@ def parseTime(timeStr, timeFormat='%Y-%m-%d %H:%M:%S'):
             else:
                 theTime = datetime.datetime.strptime(timeStr,
                                                      timeFormat.split(" ")[0])
-        except TypeError:
+        except:
             pass
     return theTime
 
@@ -117,7 +117,7 @@ def parseTimeStr(dateVal, timeFormat='%Y-%m-%d %H:%M:%S'):
     if isinstance(dateVal, datetime.datetime):
         try:
             timeStr = dateVal.strftime(timeFormat)
-        except TypeError:
+        except:
             timeStr = datetime.datetime \
                 .strptime('1997-01-01 00:00:01', '%Y-%m-%d %H:%M:%S') \
                 .strftime(timeFormat)
@@ -135,7 +135,7 @@ def tryGetValue(dic, key, executor=None, context=None):
     if isinstance(dic, dict):
         value = dic.get(key)
     if executor:
-        if context:
+        if context is not None:
             return executor(value, context)
         else:
             return executor(value)
@@ -158,6 +158,6 @@ def parseJsonobj(obj):
     if isinstance(obj, str):
         try:
             return ujson.loads(obj)
-        except TypeError:
+        except:
             return None
     return None
